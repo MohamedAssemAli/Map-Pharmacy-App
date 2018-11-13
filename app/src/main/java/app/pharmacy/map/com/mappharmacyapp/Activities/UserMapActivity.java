@@ -87,7 +87,6 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
-    // Assem
     private void sendDataBack(LatLng latLng) {
         Intent returnIntent = new Intent();
         returnIntent.putExtra("lng", latLng.longitude);
