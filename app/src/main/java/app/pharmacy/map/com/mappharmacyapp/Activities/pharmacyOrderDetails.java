@@ -6,12 +6,12 @@ import android.os.Bundle;
 import app.pharmacy.map.com.mappharmacyapp.R;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class pharmacyOrderDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_pharmacy_order_details);
         ButterKnife.bind(this);
     }
 }
