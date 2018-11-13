@@ -1,7 +1,9 @@
-package app.pharmacy.map.com.mappharmacyapp;
+package app.pharmacy.map.com.mappharmacyapp.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import app.pharmacy.map.com.mappharmacyapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
