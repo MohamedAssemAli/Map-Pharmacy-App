@@ -6,7 +6,7 @@ import android.os.Bundle;
 import app.pharmacy.map.com.mappharmacyapp.R;
 import butterknife.ButterKnife;
 
-public class pharmacyOrderDetails extends AppCompatActivity {
+public class PharmacyOrderDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

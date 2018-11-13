@@ -31,7 +31,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.Activities.MainActivity;
+import app.pharmacy.map.com.mappharmacyapp.Activities.PharmacyOrdersActivity;
 import app.pharmacy.map.com.mappharmacyapp.Activities.StartActivity;
+import app.pharmacy.map.com.mappharmacyapp.Activities.UserMapActivity;
 import app.pharmacy.map.com.mappharmacyapp.Activities.UserTypeActivity;
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
 import app.pharmacy.map.com.mappharmacyapp.R;
@@ -136,12 +138,20 @@ public class SignInFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (Integer.parseInt(Objects.requireNonNull(dataSnapshot.getValue()).toString()) == UserTypeActivity.typeId) {
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        Intent intent;
+                        // typeId = 0 for pharmacy
+                        // typeId = 1 for customer
+                        if (UserTypeActivity.typeId == 0) {
+                            intent = new Intent(getActivity(), PharmacyOrdersActivity.class);
+                        } else {
+                            intent = new Intent(getActivity(), UserMapActivity.class);
+                        }
                         startActivity(intent);
                         Objects.requireNonNull(getActivity()).finish();
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         toggleLayout(true);
                     } else {
+                        toggleLayout(false);
                         Toast.makeText(getContext(), getString(R.string.invalid_type), Toast.LENGTH_LONG).show();
                     }
                 }
