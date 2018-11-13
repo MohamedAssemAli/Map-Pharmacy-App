@@ -9,7 +9,8 @@
     <color name="low_white">#66ffffff</color>
     <color name="white">#FFF</color>
     <color name="gradient_start">#c31432</color>
-    <color name="white_some">#F7F7F7</color>
+    <color name="white_smoke">#F7F7F7</color>
     <color name="pattern_blue">#D5E1E6</color>
     <color name="low_gray">#66F7F7F7</color>
+    <color name="gray">#6c6c6c</color>
 </resources>

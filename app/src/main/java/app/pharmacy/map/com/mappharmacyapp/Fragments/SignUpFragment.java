@@ -41,7 +41,6 @@ import butterknife.OnClick;
 
 public class SignUpFragment extends Fragment {
 
-
     private final String TAG = SignUpFragment.class.getSimpleName();
     // Vars
     private String email, username, password;
@@ -75,7 +74,6 @@ public class SignUpFragment extends Fragment {
         if (isValid)
             signUp();
     }
-
 
     public SignUpFragment() {
         // Required empty public constructor

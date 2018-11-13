@@ -13,6 +13,5 @@ public class UserOrdersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_orders);
         ButterKnife.bind(this);
-
     }
 }

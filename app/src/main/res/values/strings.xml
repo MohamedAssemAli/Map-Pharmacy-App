@@ -21,4 +21,7 @@
     <string name="customer">Customer</string>
     <string name="invalid_type">This email isn\'t registered as this type!</string>
     <string name="enable_premissions">Enable location premissions!</string>
+    <string name="write_your_order">Write your order</string>
+    <string name="send_order">Send order</string>
+    <string name="empty_order">Please enter order</string>
 </resources>

@@ -34,10 +34,7 @@
 
     <style name="EditText">
         <item name="android:background">@drawable/edit_text_bg_2</item>
-        <item name="android:paddingStart">@dimen/margin_padding_size_small</item>
-        <item name="android:paddingEnd">@dimen/margin_padding_size_small</item>
-        <item name="android:paddingBottom">@dimen/margin_padding_size_micro</item>
-        <item name="android:paddingTop">@dimen/margin_padding_size_small</item>
+        <item name="android:padding">10dp</item>
         <item name="android:textColor">@color/primary_text</item>
         <item name="android:textColorHint">@color/secondary_text</item>
         <item name="android:textSize">@dimen/text_size_small</item>
