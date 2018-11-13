@@ -1,9 +1,14 @@
 package app.pharmacy.map.com.mappharmacyapp.Utils;
 
 import android.content.Context;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 public class ViewsUtils {
 
@@ -27,4 +32,112 @@ public class ViewsUtils {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context, spanCount);
         recyclerView.setLayoutManager(gridLayoutManager);
     }
+
+
+    public void setupViewPager(
+            ViewPager viewPager,
+            org.chromium.chrome.browser.wallet.ViewPagerAdapter viewPagerAdapter,
+            final TabLayout tabLayout,
+            int startTabIndex) {
+
+        try {
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    try {
+                        tab.getCustomView().animate().alpha(1).setDuration(300).setInterpolator(new AccelerateInterpolator(3));
+                    } catch (Exception e) {
+                        Log.e("tabLayout", e.toString());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    try {
+                        tab.getCustomView().animate().alpha(0.9f).setDuration(100).setInterpolator(new DecelerateInterpolator(2));
+                    } catch (Exception e) {
+                        Log.e("tabLayout", e.toString());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
+            viewPager.setAdapter(viewPagerAdapter);
+            tabLayout.setupWithViewPager(viewPager);
+            viewPager.setCurrentItem(startTabIndex, false);
+
+        } catch (Exception e) {
+            Log.d(TAG, "Exception : " + e.toString());
+        }
+
+    }
+
+/*
+
+    public void setupViewPagerWithIcons(ViewPagerAdapter viewPagerAdapter, final TabLayout tabLayout, ViewPager viewPager, Fragment fragments[], final String fragNames[], final int fragIcons[], int currentItem) {
+
+        try {
+
+            for (int i = 0; i < fragments.length; i++) {
+                viewPagerAdapter.addFragment(fragments[i]);
+            }
+
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    try {
+                        tab.getCustomView().animate().alpha(1).setDuration(300).setInterpolator(new AccelerateInterpolator(3));
+                    } catch (Exception e) {
+                        Log.e("tabLayout", e.toString());
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                    try {
+                        tab.getCustomView().animate().alpha(0.9f).setDuration(100).setInterpolator(new DecelerateInterpolator(2));
+                    } catch (Exception e) {
+                        Log.e("tabLayout", e.toString());
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
+            tabLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < fragNames.length; i++) {
+                        tabLayout.getTabAt(i).setText(fragNames[i]);
+                    }
+
+                    for (int i = 0; i < fragIcons.length; i++) {
+                        tabLayout.getTabAt(i).setIcon(fragIcons[i]);
+                    }
+                }
+            });
+
+            viewPager.setAdapter(viewPagerAdapter);
+            tabLayout.setupWithViewPager(viewPager);
+            viewPager.setCurrentItem(currentItem, false);
+
+        } catch (Exception e) {
+            Log.d(TAG, "Exception : " + e.toString());
+        }
+
+    }
+ */
+
 }
