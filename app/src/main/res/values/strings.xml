@@ -4,4 +4,20 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_user_map">Map</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="name">Name</string>
+    <string name="empty_email">Please enter email !</string>
+    <string name="empty_password">Please enter password !</string>
+    <string name="invalid_email">Invalid email form</string>
+    <string name="invalid_password">Password must be more than 6 characters</string>
+    <string name="username">Username</string>
+    <string name="error">Error</string>
+    <string name="empty_username">Please enter username !</string>
+    <string name="invalid_username">Invalid username form</string>
+    <string name="pharmacy">Pharmacy</string>
+    <string name="customer">Customer</string>
+    <string name="invalid_type">This email isn\'t registered as this type!</string>
 </resources>

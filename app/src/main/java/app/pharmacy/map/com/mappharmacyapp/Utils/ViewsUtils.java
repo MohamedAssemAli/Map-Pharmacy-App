@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
+import app.pharmacy.map.com.mappharmacyapp.Adapters.ViewPagerAdapter;
+
 public class ViewsUtils {
 
     private static final String TAG = ViewsUtils.class.getSimpleName();
@@ -34,9 +36,9 @@ public class ViewsUtils {
     }
 
 
-    public void setupViewPager(
+    public void setupTabLayout(
             ViewPager viewPager,
-            org.chromium.chrome.browser.wallet.ViewPagerAdapter viewPagerAdapter,
+            ViewPagerAdapter viewPagerAdapter,
             final TabLayout tabLayout,
             int startTabIndex) {
 

@@ -12,7 +12,7 @@ public class Validation {
     }
 
     private boolean validateName(String name) {
-        return name.matches("^[a-zA-Z]+$");
+        return name.length() >= 2;
     }
 
     private boolean validateEmail(String email) {
