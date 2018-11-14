@@ -131,21 +131,39 @@ public class SignInFragment extends Fragment {
     }
 
     private void getUserdata() {
+        String uid = null;
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            String uid = currentUser.getUid();
-            mRef.child(AppConfig.USERS).child(uid).child(AppConfig.TYPE).addValueEventListener(new ValueEventListener() {
+        if (currentUser != null)
+            uid = currentUser.getUid();
+        // typeId = 0 for pharmacy
+        // typeId = 1 for customer
+        if (UserTypeActivity.typeId == 0) {
+            mRef.child(AppConfig.PHARMACY).child(Objects.requireNonNull(uid)).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (Integer.parseInt(Objects.requireNonNull(dataSnapshot.getValue()).toString()) == UserTypeActivity.typeId) {
-                        Intent intent;
-                        // typeId = 0 for pharmacy
-                        // typeId = 1 for customer
-                        if (UserTypeActivity.typeId == 0) {
-                            intent = new Intent(getActivity(), PharmacyOrdersActivity.class);
-                        } else {
-                            intent = new Intent(getActivity(), UserMapActivity.class);
-                        }
+                    if (dataSnapshot.exists()) {
+                        Intent intent = new Intent(getActivity(), UserMapActivity.class);
+                        startActivity(intent);
+                        Objects.requireNonNull(getActivity()).finish();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        toggleLayout(true);
+                    } else {
+                        Toast.makeText(getContext(), getString(R.string.invalid_type), Toast.LENGTH_LONG).show();
+                        toggleLayout(true);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Log.e(TAG, "load user data:onCancelled", databaseError.toException());
+                }
+            });
+        } else {
+            mRef.child(AppConfig.USERS).child(Objects.requireNonNull(uid)).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Intent intent = new Intent(getActivity(), UserMapActivity.class);
                         startActivity(intent);
                         Objects.requireNonNull(getActivity()).finish();
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
