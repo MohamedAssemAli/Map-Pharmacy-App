@@ -34,9 +34,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
+import app.pharmacy.map.com.mappharmacyapp.Models.User;
 import app.pharmacy.map.com.mappharmacyapp.R;
 import butterknife.ButterKnife;
 
@@ -47,7 +55,10 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
     private boolean mLocationPermissionGranted = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private GoogleMap mMap;
-    private Marker marker;
+    //    private Marker marker;
+// Firebase
+    private FirebaseAuth mAuth;
+    private DatabaseReference mRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +70,8 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
 
     private void init() {
         getLocationPermission();
+        // Firebase
+        mRef = FirebaseDatabase.getInstance().getReference();
     }
 
     @Override
@@ -71,42 +84,37 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
             }
             mMap.setMyLocationEnabled(true); //to get blue marker with GPS icon
             mMap.getUiSettings().setMyLocationButtonEnabled(true); //to hide GPS icon
-            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    if (marker != null) { //if marker exists (not null or whatever)
-                        marker.setPosition(latLng);
-                    } else {
-                        marker = mMap.addMarker(new MarkerOptions()
-                                .position(latLng)
-                                .title("test")
-                                .draggable(true));
-                    }
-                }
-            });
+            getPharmacyOnMap();
         }
     }
 
-    private void sendDataBack(LatLng latLng) {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("lng", latLng.longitude);
-        returnIntent.putExtra("lat", latLng.latitude);
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
-    }
+    private void getPharmacyOnMap() {
+        mRef.child(AppConfig.PHARMACY).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = snapshot.getValue(User.class);
+                    Double lat = Double.parseDouble(Objects.requireNonNull(user).getLat());
+                    Double lon = Double.parseDouble(user.getLon());
+                    Marker marker = mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(lat, lon))
+                            .title(Objects.requireNonNull(user).getUsername()));
+                    marker.showInfoWindow();
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(Marker marker) {
+                            Toast.makeText(UserMapActivity.this, "marker clicked!", Toast.LENGTH_LONG).show();
+                            return false;
+                        }
+                    });
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-    // Assem
-    public void customMarker(Context context, GoogleMap mMap, int drawable, String title, LatLng latLng) {
-        int height = 80;
-        int width = 80;
-        BitmapDrawable bitmapDraw = (BitmapDrawable) context.getResources().getDrawable(drawable);
-        Bitmap b = bitmapDraw.getBitmap();
-        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
-        MarkerOptions mMarkerOptions = new MarkerOptions();
-        mMarkerOptions.title(title).position(latLng)
-                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
-        mMap.addMarker(mMarkerOptions);
+            }
+        });
     }
 
     private void initMAP() {

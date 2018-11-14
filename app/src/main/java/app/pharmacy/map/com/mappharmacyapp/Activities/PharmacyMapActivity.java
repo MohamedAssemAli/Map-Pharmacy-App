@@ -91,7 +91,7 @@ public class PharmacyMapActivity extends FragmentActivity implements OnMapReadyC
                         if (task.isSuccessful()) {
                             String uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
                             user.setUid(uid);
-                            mRef.child(AppConfig.USERS).child(uid).setValue(user);
+                            mRef.child(AppConfig.PHARMACY).child(uid).setValue(user);
                             Intent intent = new Intent(PharmacyMapActivity.this, PharmacyOrdersActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                     Intent.FLAG_ACTIVITY_CLEAR_TASK |
