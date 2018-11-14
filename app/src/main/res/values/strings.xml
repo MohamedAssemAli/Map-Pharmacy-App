@@ -26,4 +26,14 @@
     <string name="empty_order">Please enter order</string>
     <string name="done">Done</string>
     <string name="next">Next</string>
+    <string name="customer_name">Customer name:</string>
+    <string name="order_number">Order number:</string>
+    <string name="pending">Pending</string>
+    <string name="delivered">Delivered</string>
+    <string name="order_state">Order state:</string>
+    <string name="no_orders">You have no orders yet!</string>
+    <string name="available">Available</string>
+    <string name="order_is_updated">Order is updated!</string>
+    <string name="no_pharmacies">No registered pharmacies yet!</string>
+    <string name="make_order">Make order</string>
 </resources>

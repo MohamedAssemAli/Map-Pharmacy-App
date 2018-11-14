@@ -7,14 +7,11 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,9 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Objects;
 
-import app.pharmacy.map.com.mappharmacyapp.Activities.MainActivity;
 import app.pharmacy.map.com.mappharmacyapp.Activities.PharmacyMapActivity;
-import app.pharmacy.map.com.mappharmacyapp.Activities.PharmacyOrdersActivity;
 import app.pharmacy.map.com.mappharmacyapp.Activities.UserMapActivity;
 import app.pharmacy.map.com.mappharmacyapp.Activities.UserTypeActivity;
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
@@ -99,11 +94,11 @@ public class SignUpFragment extends Fragment {
     }
 
     private void signUp() {
-        final User user = new User(username, email, password, UserTypeActivity.typeId);
+        final User user = new User(username, email, password);
         if (UserTypeActivity.typeId == 0) {
             Intent intent = new Intent(getActivity(), PharmacyMapActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putSerializable(AppConfig.REGISTRATION_INTENT_KEY, user);
+            bundle.putSerializable(AppConfig.INTENT_KEY, user);
             intent.putExtras(bundle);
             startActivity(intent);
         } else {

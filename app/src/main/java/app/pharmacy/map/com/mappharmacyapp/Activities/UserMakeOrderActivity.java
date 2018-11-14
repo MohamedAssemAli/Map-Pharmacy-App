@@ -1,9 +1,11 @@
 package app.pharmacy.map.com.mappharmacyapp.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,13 +15,21 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
+import app.pharmacy.map.com.mappharmacyapp.Models.Order;
+import app.pharmacy.map.com.mappharmacyapp.Models.Pharmacy;
+import app.pharmacy.map.com.mappharmacyapp.Models.User;
 import app.pharmacy.map.com.mappharmacyapp.R;
+import app.pharmacy.map.com.mappharmacyapp.Utils.Imageutility;
 import app.pharmacy.map.com.mappharmacyapp.Utils.Validation;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +39,8 @@ public class UserMakeOrderActivity extends AppCompatActivity {
 
     private final String TAG = UserMakeOrderActivity.class.getSimpleName();
     // Vars
-    private String order;
+    private Pharmacy pharmacyObj;
+    private String uid, username, order;
     boolean isValid = false;
     // Firebase
     private FirebaseAuth mAuth;
@@ -57,7 +68,17 @@ public class UserMakeOrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_make_order);
         ButterKnife.bind(this);
-        init();
+        Intent intent = getIntent();
+        if (intent != null) {
+            pharmacyObj = (Pharmacy) intent.getSerializableExtra(AppConfig.INTENT_KEY);
+            if (pharmacyObj != null) {
+                init();
+            } else {
+                closeOnError();
+            }
+        } else {
+            closeOnError();
+        }
     }
 
     private void init() {
@@ -66,14 +87,35 @@ public class UserMakeOrderActivity extends AppCompatActivity {
         mRef = FirebaseDatabase.getInstance().getReference();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUserCredentials();
+    }
+
+    private void getUserCredentials() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            uid = currentUser.getUid();
+            getUserdata(uid);
+        }
+    }
+
     private void sendOrder() {
         toggleLayout(false);
-        mRef.child(AppConfig.TYPE).setValue("test").addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                toggleLayout(true);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
+        String key = mRef.child(AppConfig.USER_ORDERS).child(uid).push().getKey();
+        Order orderObj = new Order(key, order, 0, pharmacyObj.getUid(), pharmacyObj.getUsername(), uid, username);
+        mRef.child(AppConfig.USER_ORDERS)
+                .child(uid)
+                .child(Objects.requireNonNull(key))
+                .setValue(orderObj)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        toggleLayout(true);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(UserMakeOrderActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -106,6 +148,20 @@ public class UserMakeOrderActivity extends AppCompatActivity {
         return Objects.requireNonNull(editText.getText()).toString();
     }
 
+    private void getUserdata(String uid) {
+        mRef.child(AppConfig.USERS).child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                username = Objects.requireNonNull(dataSnapshot.child(AppConfig.USERS_USERNAME).getValue()).toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e(TAG, "load user data:onCancelled", databaseError.toException());
+            }
+        });
+    }
+
     private void toggleLayout(boolean flag) {
         if (flag) {
             progressLayout.setVisibility(View.GONE);
@@ -114,6 +170,11 @@ public class UserMakeOrderActivity extends AppCompatActivity {
             progressLayout.setVisibility(View.VISIBLE);
             progressBar.show();
         }
+    }
+
+    private void closeOnError() {
+        finish();
+        Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
     }
 }
 

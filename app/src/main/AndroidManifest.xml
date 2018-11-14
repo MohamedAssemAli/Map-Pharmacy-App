@@ -15,16 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activities.MainActivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".Activities.SplashActivity" />
-        <activity android:name=".Activities.StartActivity"></activity>
+        <activity android:name=".Activities.StartActivity" />
         <activity android:name=".Activities.UserTypeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -44,11 +46,11 @@
             android:name=".Activities.UserMapActivity"
             android:label="@string/title_activity_user_map" />
         <activity android:name=".Activities.PharmacyMapActivity" />
-        <activity android:name=".Activities.UserMakeOrderActivity">
-        </activity>
+        <activity android:name=".Activities.UserMakeOrderActivity"></activity>
         <activity android:name=".Activities.UserOrdersActivity" />
         <activity android:name=".Activities.PharmacyOrdersActivity" />
-        <activity android:name=".Activities.PharmacyOrderDetails"></activity>
+        <activity android:name=".Activities.PharmacyOrderDetails" />
+        <activity android:name=".Activities.UserPharmacyList"></activity>
     </application>
 
 </manifest>

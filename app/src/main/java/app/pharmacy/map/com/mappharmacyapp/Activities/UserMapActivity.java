@@ -44,6 +44,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
+import app.pharmacy.map.com.mappharmacyapp.Models.Pharmacy;
 import app.pharmacy.map.com.mappharmacyapp.Models.User;
 import app.pharmacy.map.com.mappharmacyapp.R;
 import butterknife.ButterKnife;
@@ -56,8 +57,7 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private GoogleMap mMap;
     //    private Marker marker;
-// Firebase
-    private FirebaseAuth mAuth;
+    // Firebase
     private DatabaseReference mRef;
 
     @Override
@@ -85,6 +85,7 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
             mMap.setMyLocationEnabled(true); //to get blue marker with GPS icon
             mMap.getUiSettings().setMyLocationButtonEnabled(true); //to hide GPS icon
             getPharmacyOnMap();
+
         }
     }
 
@@ -93,16 +94,17 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    User user = snapshot.getValue(User.class);
-                    Double lat = Double.parseDouble(Objects.requireNonNull(user).getLat());
-                    Double lon = Double.parseDouble(user.getLon());
+                    final Pharmacy pharmacy = snapshot.getValue(Pharmacy.class);
+                    Double lat = Double.parseDouble(Objects.requireNonNull(pharmacy).getLat());
+                    Double lon = Double.parseDouble(pharmacy.getLon());
                     Marker marker = mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(lat, lon))
-                            .title(Objects.requireNonNull(user).getUsername()));
+                            .title(Objects.requireNonNull(pharmacy).getUsername()));
                     marker.showInfoWindow();
                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {
+                            goToMakeOrder(pharmacy);
                             Toast.makeText(UserMapActivity.this, "marker clicked!", Toast.LENGTH_LONG).show();
                             return false;
                         }
@@ -115,6 +117,14 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
 
             }
         });
+    }
+
+    private void goToMakeOrder(Pharmacy pharmacy) {
+        Intent intent = new Intent(this, UserMakeOrderActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AppConfig.INTENT_KEY, pharmacy);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void initMAP() {

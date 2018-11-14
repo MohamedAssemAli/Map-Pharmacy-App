@@ -35,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
+import app.pharmacy.map.com.mappharmacyapp.Models.Pharmacy;
 import app.pharmacy.map.com.mappharmacyapp.Models.User;
 import app.pharmacy.map.com.mappharmacyapp.R;
 import butterknife.BindView;
@@ -49,6 +50,7 @@ public class PharmacyMapActivity extends FragmentActivity implements OnMapReadyC
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private GoogleMap mMap;
     private User user;
+    private String lat, lon;
     // Firebase
     private FirebaseAuth mAuth;
     private DatabaseReference mRef;
@@ -71,7 +73,7 @@ public class PharmacyMapActivity extends FragmentActivity implements OnMapReadyC
         ButterKnife.bind(this);
         Intent intent = getIntent();
         if (intent != null) {
-            user = (User) intent.getSerializableExtra(AppConfig.REGISTRATION_INTENT_KEY);
+            user = (User) intent.getSerializableExtra(AppConfig.INTENT_KEY);
             if (user != null) {
                 init();
             } else {
@@ -90,8 +92,8 @@ public class PharmacyMapActivity extends FragmentActivity implements OnMapReadyC
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             String uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                            user.setUid(uid);
-                            mRef.child(AppConfig.PHARMACY).child(uid).setValue(user);
+                            Pharmacy pharmacy = new Pharmacy(uid, user.getUsername(), user.getEmail(), user.getPassword(), lat, lon);
+                            mRef.child(AppConfig.PHARMACY).child(uid).setValue(pharmacy);
                             Intent intent = new Intent(PharmacyMapActivity.this, PharmacyOrdersActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                     Intent.FLAG_ACTIVITY_CLEAR_TASK |
@@ -154,8 +156,9 @@ public class PharmacyMapActivity extends FragmentActivity implements OnMapReadyC
                                         .position(new LatLng(current_location.getLatitude(), current_location.getLongitude()))
                                         .title("My Location")
                                         .draggable(false));
-                                user.setLat(String.valueOf(current_location.getLatitude()));
-                                user.setLon(String.valueOf(current_location.getLongitude()));
+
+                                lat = String.valueOf(current_location.getLatitude());
+                                lon = String.valueOf(current_location.getLongitude());
                             } catch (Exception e) {
                                 onBackPressed();
                                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));

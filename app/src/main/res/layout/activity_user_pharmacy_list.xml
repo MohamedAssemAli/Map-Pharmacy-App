@@ -13,18 +13,18 @@
         layout="@layout/toolbar" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/pharmacy_orders_activity_recycler_view"
+        android:id="@+id/user_pharmacy_activity_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/margin_padding_size_small" />
 
     <TextView
-        android:id="@+id/pharmacy_orders_activity_empty_recycler"
+        android:id="@+id/user_pharmacy_activity_empty_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/margin_padding_size_small"
         android:gravity="center"
-        android:text="@string/no_orders"
+        android:text="@string/no_pharmacies"
         android:textColor="@color/secondary_text"
         android:textSize="@dimen/text_size_small"
         android:visibility="gone" />
