@@ -6,5 +6,8 @@ public class AppConfig {
     // Users
     public final static String USERS = "users";
     public final static String TYPE = "type";
+    // Registration Intent
+    public final static String REGISTRATION_INTENT_KEY = "key";
+
 }
 

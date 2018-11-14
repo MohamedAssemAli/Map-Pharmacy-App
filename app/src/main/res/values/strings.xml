@@ -24,4 +24,6 @@
     <string name="write_your_order">Write your order</string>
     <string name="send_order">Send order</string>
     <string name="empty_order">Please enter order</string>
+    <string name="done">Done</string>
+    <string name="next">Next</string>
 </resources>

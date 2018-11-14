@@ -1,15 +1,16 @@
 package app.pharmacy.map.com.mappharmacyapp.Models;
 
-public class User {
+import java.io.Serializable;
 
-    private String uid, username, email, password;
+public class User implements Serializable {
+
+    private String uid, username, email, password, lat, lon;
     private int type;
 
     public User() {
     }
 
     public User(String username, String email, String password, int type) {
-        this.uid = uid;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -54,5 +55,21 @@ public class User {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
     }
 }

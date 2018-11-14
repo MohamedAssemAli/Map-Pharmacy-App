@@ -23,10 +23,10 @@
         <activity android:name=".Activities.SplashActivity" />
         <activity android:name=".Activities.StartActivity"></activity>
         <activity android:name=".Activities.UserTypeActivity">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -43,11 +43,8 @@
         <activity
             android:name=".Activities.UserMapActivity"
             android:label="@string/title_activity_user_map" />
+        <activity android:name=".Activities.PharmacyMapActivity" />
         <activity android:name=".Activities.UserMakeOrderActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".Activities.UserOrdersActivity" />
         <activity android:name=".Activities.PharmacyOrdersActivity" />

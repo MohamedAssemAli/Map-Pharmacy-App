@@ -151,8 +151,8 @@ public class SignInFragment extends Fragment {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         toggleLayout(true);
                     } else {
-                        toggleLayout(false);
                         Toast.makeText(getContext(), getString(R.string.invalid_type), Toast.LENGTH_LONG).show();
+                        toggleLayout(true);
                     }
                 }
 

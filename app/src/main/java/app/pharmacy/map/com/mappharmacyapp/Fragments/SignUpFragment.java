@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.Activities.MainActivity;
+import app.pharmacy.map.com.mappharmacyapp.Activities.PharmacyMapActivity;
 import app.pharmacy.map.com.mappharmacyapp.Activities.PharmacyOrdersActivity;
 import app.pharmacy.map.com.mappharmacyapp.Activities.UserMapActivity;
 import app.pharmacy.map.com.mappharmacyapp.Activities.UserTypeActivity;
@@ -89,44 +90,50 @@ public class SignUpFragment extends Fragment {
     }
 
     private void init() {
+        if (UserTypeActivity.typeId == 0) {
+            signUpBtn.setText(getString(R.string.next));
+        }
         // Firebase
         mAuth = FirebaseAuth.getInstance();
         mRef = FirebaseDatabase.getInstance().getReference();
     }
 
     private void signUp() {
-        final User user = new User(email, username, password, UserTypeActivity.typeId);
-        toggleLayout(false);
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    String uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                    user.setUid(uid);
-                    mRef.child(AppConfig.USERS).child(uid).setValue(user);
-                    Intent intent;
-                    // typeId = 0 for pharmacy
-                    // typeId = 1 for customer
-                    if (UserTypeActivity.typeId == 0) {
-                        intent = new Intent(getActivity(), PharmacyOrdersActivity.class);
+        final User user = new User(username, email, password, UserTypeActivity.typeId);
+        if (UserTypeActivity.typeId == 0) {
+            Intent intent = new Intent(getActivity(), PharmacyMapActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(AppConfig.REGISTRATION_INTENT_KEY, user);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        } else {
+            toggleLayout(false);
+            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        String uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                        user.setUid(uid);
+                        mRef.child(AppConfig.USERS).child(uid).setValue(user);
+                        Intent intent = new Intent(getActivity(), UserMapActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        Objects.requireNonNull(getActivity()).finish();
+                        toggleLayout(true);
                     } else {
-                        intent = new Intent(getActivity(), UserMapActivity.class);
+                        Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_LONG).show();
                     }
-                    startActivity(intent);
-                    Objects.requireNonNull(getActivity()).finish();
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    toggleLayout(true);
-                } else {
-                    Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_LONG).show();
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
-                toggleLayout(true);
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
+                    toggleLayout(true);
+                }
+            });
+        }
     }
 
     private void CheckValidation() {
