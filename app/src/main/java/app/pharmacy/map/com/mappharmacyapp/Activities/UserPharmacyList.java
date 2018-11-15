@@ -63,41 +63,40 @@ public class UserPharmacyList extends AppCompatActivity {
     private void init() {
         toggleLayout(false);
         // Firebase
-        mRef = FirebaseDatabase.getInstance().getReference();
+        mRef = FirebaseDatabase.getInstance().getReference().child(AppConfig.PHARMACY);
         pharmacyArrayList = new ArrayList<>();
         toggleLayout(false);
         new ViewsUtils().setupLinearVerticalRecView(this, pharmacyRecyclerView);
         pharmacyAdapter = new PharmacyAdapter(this, pharmacyArrayList);
         pharmacyRecyclerView.setAdapter(pharmacyAdapter);
-        getOrders();
+        getPharmacies();
     }
 
-    private void getOrders() {
-        mRef.child(AppConfig.PHARMACY)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            pharmacyArrayList.clear();
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Pharmacy pharmacy = snapshot.getValue(Pharmacy.class);
-                                pharmacyArrayList.add(pharmacy);
-                                pharmacyAdapter.notifyDataSetChanged();
-                            }
-                            Collections.reverse(pharmacyArrayList);
-                            toggleLayout(true);
-                        } else {
-                            toggleLayout(true);
-                        }
+    private void getPharmacies() {
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    pharmacyArrayList.clear();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        Pharmacy pharmacy = snapshot.getValue(Pharmacy.class);
+                        pharmacyArrayList.add(pharmacy);
+                        pharmacyAdapter.notifyDataSetChanged();
                     }
+                    Collections.reverse(pharmacyArrayList);
+                    toggleLayout(true);
+                } else {
+                    toggleLayout(true);
+                }
+            }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(TAG, databaseError.getMessage());
-                        Log.d(TAG, databaseError.getDetails());
-                        Toast.makeText(UserPharmacyList.this, R.string.error, Toast.LENGTH_LONG).show();
-                    }
-                });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.d(TAG, databaseError.getMessage());
+                Log.d(TAG, databaseError.getDetails());
+                Toast.makeText(UserPharmacyList.this, R.string.error, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void toggleLayout(boolean flag) {

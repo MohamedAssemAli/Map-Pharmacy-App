@@ -133,8 +133,8 @@ public class SignInFragment extends Fragment {
     private void getUserdata() {
         String uid = null;
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null)
-            uid = currentUser.getUid();
+//        if (currentUser != null)
+        uid = currentUser.getUid();
         // typeId = 0 for pharmacy
         // typeId = 1 for customer
         if (UserTypeActivity.typeId == 0) {
@@ -142,7 +142,7 @@ public class SignInFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.exists()) {
-                        Intent intent = new Intent(getActivity(), UserMapActivity.class);
+                        Intent intent = new Intent(getActivity(), PharmacyOrdersActivity.class);
                         startActivity(intent);
                         Objects.requireNonNull(getActivity()).finish();
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

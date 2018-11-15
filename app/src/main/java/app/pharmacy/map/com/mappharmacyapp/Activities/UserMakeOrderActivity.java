@@ -104,8 +104,8 @@ public class UserMakeOrderActivity extends AppCompatActivity {
 
     private void sendOrder() {
         toggleLayout(false);
-        String key = mRef.child(AppConfig.USER_ORDERS).child(uid).push().getKey();
-        Order orderObj = new Order(key, order, 0, pharmacyObj.getUid(), pharmacyObj.getUsername(), uid, username);
+        final String key = mRef.child(AppConfig.USER_ORDERS).child(uid).push().getKey();
+        final Order orderObj = new Order(key, order, 0, pharmacyObj.getUid(), pharmacyObj.getUsername(), uid, username);
         mRef.child(AppConfig.USER_ORDERS)
                 .child(uid)
                 .child(Objects.requireNonNull(key))
@@ -113,7 +113,17 @@ public class UserMakeOrderActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        toggleLayout(true);
+                        mRef.child(AppConfig.PHARMACY_ORDERS)
+                                .child(pharmacyObj.getUid())
+                                .child(Objects.requireNonNull(key))
+                                .setValue(orderObj).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                toggleLayout(true);
+                            }
+                        });
+                        finish();
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override

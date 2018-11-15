@@ -58,7 +58,12 @@ public class PharmacyOrderDetails extends AppCompatActivity {
     // OnClicks
     @OnClick(R.id.order_details_activity_done_btn)
     void sendData() {
-        if (deliveredStateRadioButton.isSelected())
+        // get selected radio button from radioGroup
+        int selectedId = stateRadioGroup.getCheckedRadioButtonId();
+        // find the radioButton by returned id
+        RadioButton radioButton = findViewById(selectedId);
+        int state = radioButton.getId();
+        if (state == R.id.order_details_activity_available_state)
             updateOrder(order, 1);
         else
             updateOrder(order, 0);
@@ -103,8 +108,8 @@ public class PharmacyOrderDetails extends AppCompatActivity {
 
     private void updateOrder(Order order, int state) {
         mRef.child(AppConfig.PHARMACY_ORDERS)
-                .child(order.getUid())
                 .child(order.getPharmacyUid())
+                .child(order.getUid())
                 .child(AppConfig.STATE)
                 .setValue(state)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
