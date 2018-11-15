@@ -36,7 +36,7 @@ public class UserTypeActivity extends AppCompatActivity {
     @OnClick(R.id.user_type_activity_customer_type_img)
     void chooseCustomerType() {
         typeId = 1;
-        Intent intent = new Intent(this, PharmacyOrdersActivity.class);
+        Intent intent = new Intent(this, StartActivity.class);
         startActivity(intent);
         finish();
     }
@@ -44,7 +44,7 @@ public class UserTypeActivity extends AppCompatActivity {
     @OnClick(R.id.user_type_activity_customer_type_btn)
     void chooseCustomerType2() {
         typeId = 1;
-        Intent intent = new Intent(this, UserMapActivity.class);
+        Intent intent = new Intent(this, StartActivity.class);
         startActivity(intent);
         finish();
     }

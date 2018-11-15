@@ -242,16 +242,6 @@ public class UserMapActivity extends AppCompatActivity implements OnMapReadyCall
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // check if user is signed in and update UI accordingly
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            sendToStart();
-        }
-    }
-
     private void sendToStart() {
         Intent intent = new Intent(this, UserTypeActivity.class);
         startActivity(intent);
