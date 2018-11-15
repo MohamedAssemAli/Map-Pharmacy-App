@@ -16,6 +16,8 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,9 +53,10 @@ import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
 import app.pharmacy.map.com.mappharmacyapp.Models.Pharmacy;
 import app.pharmacy.map.com.mappharmacyapp.Models.User;
 import app.pharmacy.map.com.mappharmacyapp.R;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class UserMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class UserMapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private final String TAG = UserMapActivity.class.getSimpleName();
     private static final float DEFAULT_ZOOM = 15f;
@@ -64,6 +67,8 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
     // Firebase
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,9 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_user_map);
         ButterKnife.bind(this);
         init();
+        // toolbar
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name));
     }
 
     private void init() {
@@ -219,6 +227,10 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
             case R.id.logout:
                 logoutUser();
                 return true;
+            case R.id.my_orders:
+                Intent intent = new Intent(this, UserOrdersActivity.class);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -226,7 +238,7 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.user_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -241,7 +253,7 @@ public class UserMapActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     private void sendToStart() {
-        Intent intent = new Intent(this, StartActivity.class);
+        Intent intent = new Intent(this, UserTypeActivity.class);
         startActivity(intent);
         finish();
     }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,8 @@ public class UserMakeOrderActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mRef;
     // Views
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.user_make_order_activity_order_txt)
     EditText orderTxt;
     @BindView(R.id.user_make_order_activity_order_btn)
@@ -73,6 +76,12 @@ public class UserMakeOrderActivity extends AppCompatActivity {
             pharmacyObj = (Pharmacy) intent.getSerializableExtra(AppConfig.INTENT_KEY);
             if (pharmacyObj != null) {
                 init();
+
+                // toolbar
+                setSupportActionBar(toolbar);
+                Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name));
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
             } else {
                 closeOnError();
             }

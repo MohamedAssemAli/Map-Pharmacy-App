@@ -1,5 +1,6 @@
 package app.pharmacy.map.com.mappharmacyapp.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -131,10 +133,8 @@ public class SignInFragment extends Fragment {
     }
 
     private void getUserdata() {
-        String uid = null;
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if (currentUser != null)
-        uid = currentUser.getUid();
+        final FirebaseUser currentUser = mAuth.getCurrentUser();
+        String uid = currentUser.getUid();
         // typeId = 0 for pharmacy
         // typeId = 1 for customer
         if (UserTypeActivity.typeId == 0) {
@@ -146,8 +146,10 @@ public class SignInFragment extends Fragment {
                         startActivity(intent);
                         Objects.requireNonNull(getActivity()).finish();
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        hideKeyboard();
                         toggleLayout(true);
                     } else {
+                        mAuth.signOut();
                         Toast.makeText(getContext(), getString(R.string.invalid_type), Toast.LENGTH_LONG).show();
                         toggleLayout(true);
                     }
@@ -169,6 +171,7 @@ public class SignInFragment extends Fragment {
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         toggleLayout(true);
                     } else {
+                        mAuth.signOut();
                         Toast.makeText(getContext(), getString(R.string.invalid_type), Toast.LENGTH_LONG).show();
                         toggleLayout(true);
                     }
@@ -208,4 +211,12 @@ public class SignInFragment extends Fragment {
         }
     }
 
+    public void hideKeyboard() {
+        // Check if no view has focus:
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            Objects.requireNonNull(inputManager).hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
 }

@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.Adapters.PharmacyAdapter;
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
@@ -36,8 +37,6 @@ public class UserPharmacyList extends AppCompatActivity {
     // Views
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.toolbar_title)
-    TextView toolbarTitle;
     @BindView(R.id.user_pharmacy_activity_recycler_view)
     RecyclerView pharmacyRecyclerView;
     @BindView(R.id.user_pharmacy_activity_empty_recycler)
@@ -58,7 +57,13 @@ public class UserPharmacyList extends AppCompatActivity {
         setContentView(R.layout.activity_user_pharmacy_list);
         ButterKnife.bind(this);
         init();
+        // toolbar
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
+
 
     private void init() {
         toggleLayout(false);

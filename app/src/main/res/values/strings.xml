@@ -37,4 +37,5 @@
     <string name="no_pharmacies">No registered pharmacies yet!</string>
     <string name="make_order">Make order</string>
     <string name="logout">Logout</string>
+    <string name="my_orders">My orders</string>
 </resources>

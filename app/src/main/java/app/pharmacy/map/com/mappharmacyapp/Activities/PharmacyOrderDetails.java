@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -18,6 +19,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
 import app.pharmacy.map.com.mappharmacyapp.Models.Order;
@@ -36,8 +39,8 @@ public class PharmacyOrderDetails extends AppCompatActivity {
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
     // Views
-    @BindView(R.id.toolbar_title)
-    TextView toolbarTitle;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.order_details_activity_username)
     TextView orderUsernameTxt;
     @BindView(R.id.order_details_activity_order_number)
@@ -81,6 +84,11 @@ public class PharmacyOrderDetails extends AppCompatActivity {
             if (order != null) {
                 init();
                 updateUi(order);
+                // toolbar
+                setSupportActionBar(toolbar);
+                Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name));
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
             } else {
                 closeOnError();
             }
@@ -106,7 +114,7 @@ public class PharmacyOrderDetails extends AppCompatActivity {
         }
     }
 
-    private void updateOrder(Order order, int state) {
+    private void updateOrder(final Order order, final int state) {
         mRef.child(AppConfig.PHARMACY_ORDERS)
                 .child(order.getPharmacyUid())
                 .child(order.getUid())
@@ -115,6 +123,11 @@ public class PharmacyOrderDetails extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        mRef.child(AppConfig.USER_ORDERS)
+                                .child(order.getUserUid())
+                                .child(order.getUid())
+                                .child(AppConfig.STATE)
+                                .setValue(state);
                         Toast.makeText(PharmacyOrderDetails.this, getString(R.string.order_is_updated), Toast.LENGTH_LONG).show();
                         finish();
                     }

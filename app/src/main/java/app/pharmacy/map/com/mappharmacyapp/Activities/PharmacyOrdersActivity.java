@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.Adapters.PharmacyOrdersAdapter;
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
@@ -41,8 +42,6 @@ public class PharmacyOrdersActivity extends AppCompatActivity {
     // Views
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.toolbar_title)
-    TextView toolbarTitle;
     @BindView(R.id.pharmacy_orders_activity_recycler_view)
     RecyclerView ordersRecyclerView;
     @BindView(R.id.pharmacy_orders_activity_empty_recycler)
@@ -64,6 +63,10 @@ public class PharmacyOrdersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pharmacy_orders);
         ButterKnife.bind(this);
         init();
+
+        // toolbar
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name));
     }
 
     @Override
@@ -170,7 +173,7 @@ public class PharmacyOrdersActivity extends AppCompatActivity {
     }
 
     private void sendToStart() {
-        Intent intent = new Intent(this, StartActivity.class);
+        Intent intent = new Intent(this, UserTypeActivity.class);
         startActivity(intent);
         finish();
     }

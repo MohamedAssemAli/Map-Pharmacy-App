@@ -6,15 +6,8 @@
     android:background="@color/colorPrimaryDark"
     android:gravity="center"
     app:contentInsetEnd="@dimen/margin_padding_size_micro"
+    app:titleTextColor="@color/white"
+    app:subtitleTextColor="@color/white"
     app:contentInsetStart="@dimen/margin_padding_size_micro">
 
-    <TextView
-        android:id="@+id/toolbar_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_padding_size_micro"
-        android:text="@string/app_name"
-        android:textAlignment="textStart"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_large" />
 </android.support.v7.widget.Toolbar>

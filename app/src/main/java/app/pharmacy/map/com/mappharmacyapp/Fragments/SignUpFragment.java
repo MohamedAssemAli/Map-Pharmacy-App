@@ -1,5 +1,6 @@
 package app.pharmacy.map.com.mappharmacyapp.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v4.widget.ContentLoadingProgressBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -116,6 +118,7 @@ public class SignUpFragment extends Fragment {
                                 Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         Objects.requireNonNull(getActivity()).finish();
+                        hideKeyboard();
                         toggleLayout(true);
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_LONG).show();
@@ -177,6 +180,15 @@ public class SignUpFragment extends Fragment {
         } else {
             progressLayout.setVisibility(View.VISIBLE);
             progressBar.show();
+        }
+    }
+
+    public void hideKeyboard() {
+        // Check if no view has focus:
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            Objects.requireNonNull(inputManager).hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 }
