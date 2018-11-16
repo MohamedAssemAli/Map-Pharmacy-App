@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
 import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 } else {
-                    Intent intent = new Intent(MainActivity.this, UserMapActivity.class);
+                    Intent intent = new Intent(MainActivity.this, UserPharmacyList.class);
                     startActivity(intent);
                     finish();
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

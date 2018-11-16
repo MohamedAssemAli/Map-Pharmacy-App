@@ -32,7 +32,7 @@ public class PharmacyAdapter extends RecyclerView.Adapter<PharmacyAdapter.Pharma
     @NonNull
     @Override
     public PharmacyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View item = LayoutInflater.from(context).inflate(R.layout.item_order, viewGroup, false);
+        View item = LayoutInflater.from(context).inflate(R.layout.item_pharmacy, viewGroup, false);
         return new PharmacyHolder(item);
     }
 

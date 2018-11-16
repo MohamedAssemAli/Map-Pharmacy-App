@@ -38,4 +38,6 @@
     <string name="make_order">Make order</string>
     <string name="logout">Logout</string>
     <string name="my_orders">My orders</string>
+    <string name="list">List</string>
+    <string name="other">Other</string>
 </resources>

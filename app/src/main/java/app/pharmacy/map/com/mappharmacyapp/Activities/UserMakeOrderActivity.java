@@ -7,6 +7,9 @@ import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -194,6 +197,40 @@ public class UserMakeOrderActivity extends AppCompatActivity {
     private void closeOnError() {
         finish();
         Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.logout:
+                logoutUser();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.user_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void sendToStart() {
+        Intent intent = new Intent(this, UserTypeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void logoutUser() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            mAuth.signOut();
+            sendToStart();
+        }
     }
 }
 

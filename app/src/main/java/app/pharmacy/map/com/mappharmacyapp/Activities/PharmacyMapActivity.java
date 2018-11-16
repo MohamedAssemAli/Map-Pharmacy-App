@@ -86,33 +86,62 @@ public class PharmacyMapActivity extends FragmentActivity implements OnMapReadyC
 
     private void signUp(final User user) {
         toggleLayout(false);
-        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            String uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                            Pharmacy pharmacy = new Pharmacy(uid, user.getUsername(), user.getEmail(), user.getPassword(), lat, lon);
-                            mRef.child(AppConfig.PHARMACY).child(uid).setValue(pharmacy);
-                            Intent intent = new Intent(PharmacyMapActivity.this, PharmacyOrdersActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                    Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                                    Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            Objects.requireNonNull(PharmacyMapActivity.this).finish();
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            toggleLayout(true);
-                        } else {
-                            Toast.makeText(PharmacyMapActivity.this, getString(R.string.error), Toast.LENGTH_LONG).show();
+        if (UserTypeActivity.typeId == 0) {
+            mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                String uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                                Pharmacy pharmacy = new Pharmacy(uid, user.getUsername(), user.getEmail(), user.getPassword(), lat, lon);
+                                mRef.child(AppConfig.PHARMACY).child(uid).setValue(pharmacy);
+                                Intent intent = new Intent(PharmacyMapActivity.this, PharmacyOrdersActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                Objects.requireNonNull(PharmacyMapActivity.this).finish();
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                toggleLayout(true);
+                            } else {
+                                Toast.makeText(PharmacyMapActivity.this, getString(R.string.error), Toast.LENGTH_LONG).show();
+                            }
                         }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(PharmacyMapActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+                    toggleLayout(true);
+                }
+            });
+        } else {
+            toggleLayout(false);
+            mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        String uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+                        user.setUid(uid);
+                        mRef.child(AppConfig.USERS).child(uid).setValue(user);
+                        Intent intent = new Intent(PharmacyMapActivity.this, UserPharmacyList.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                        toggleLayout(true);
+                    } else {
+                        Toast.makeText(PharmacyMapActivity.this, getString(R.string.error), Toast.LENGTH_LONG).show();
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(PharmacyMapActivity.this, e.toString(), Toast.LENGTH_LONG).show();
-                toggleLayout(true);
-            }
-        });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(PharmacyMapActivity.this, e.toString(), Toast.LENGTH_LONG).show();
+                    toggleLayout(true);
+                }
+            });
+        }
     }
 
     private void init() {

@@ -97,41 +97,11 @@ public class SignUpFragment extends Fragment {
 
     private void signUp() {
         final User user = new User(username, email, password);
-        if (UserTypeActivity.typeId == 0) {
-            Intent intent = new Intent(getActivity(), PharmacyMapActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(AppConfig.INTENT_KEY, user);
-            intent.putExtras(bundle);
-            startActivity(intent);
-        } else {
-            toggleLayout(false);
-            mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        String uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-                        user.setUid(uid);
-                        mRef.child(AppConfig.USERS).child(uid).setValue(user);
-                        Intent intent = new Intent(getActivity(), UserMapActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                                Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        Objects.requireNonNull(getActivity()).finish();
-                        hideKeyboard();
-                        toggleLayout(true);
-                    } else {
-                        Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_LONG).show();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getActivity(), e.toString(), Toast.LENGTH_LONG).show();
-                    toggleLayout(true);
-                }
-            });
-        }
+        Intent intent = new Intent(getActivity(), PharmacyMapActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AppConfig.INTENT_KEY, user);
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
     private void CheckValidation() {
@@ -180,15 +150,6 @@ public class SignUpFragment extends Fragment {
         } else {
             progressLayout.setVisibility(View.VISIBLE);
             progressBar.show();
-        }
-    }
-
-    public void hideKeyboard() {
-        // Check if no view has focus:
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            Objects.requireNonNull(inputManager).hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 }

@@ -6,6 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -17,6 +20,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -139,6 +143,24 @@ public class PharmacyOrderDetails extends AppCompatActivity {
         });
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            case R.id.logout:
+                logoutUser();
+                return true;
+            case R.id.my_orders:
+                Intent intent = new Intent(this, UserOrdersActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void toggleLayout(boolean flag) {
         if (flag) {
             progressLayout.setVisibility(View.GONE);
@@ -153,5 +175,26 @@ public class PharmacyOrderDetails extends AppCompatActivity {
     private void closeOnError() {
         finish();
         Toast.makeText(this, R.string.error, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void sendToStart() {
+        Intent intent = new Intent(this, UserTypeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void logoutUser() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            mAuth.signOut();
+            sendToStart();
+        }
     }
 }

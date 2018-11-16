@@ -6,7 +6,8 @@
 
     <include
         android:id="@+id/progress_layout"
-        layout="@layout/progressbar" />
+        layout="@layout/progressbar"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/toolbar"
@@ -15,8 +16,25 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/user_pharmacy_activity_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="@dimen/margin_padding_size_small" />
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_padding_size_small"
+        android:layout_weight="9" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/margin_padding_size_small"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/user_pharmacy_activity_other_button"
+            style="@style/ButtonNormal"
+            android:layout_width="168dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:text="@string/other" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/user_pharmacy_activity_empty_recycler"

@@ -1,30 +1,20 @@
 package app.pharmacy.map.com.mappharmacyapp.Activities;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -33,7 +23,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -51,7 +40,6 @@ import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
 import app.pharmacy.map.com.mappharmacyapp.Models.Pharmacy;
-import app.pharmacy.map.com.mappharmacyapp.Models.User;
 import app.pharmacy.map.com.mappharmacyapp.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,6 +67,8 @@ public class UserMapActivity extends AppCompatActivity implements OnMapReadyCall
         // toolbar
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     private void init() {

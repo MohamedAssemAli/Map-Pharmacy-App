@@ -17,10 +17,11 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:scaleType="centerInside"
             android:src="@drawable/doctor"
             tools:ignore="ContentDescription" />
 
@@ -38,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="2dp"
+                android:textAlignment="center"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />
