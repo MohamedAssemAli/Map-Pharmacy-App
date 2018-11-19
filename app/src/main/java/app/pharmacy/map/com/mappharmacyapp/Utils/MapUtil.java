@@ -39,15 +39,9 @@ public class MapUtil {
         mMap.addMarker(mMarkerOptions);
     }
 
-    public void customMarker(Context context, GoogleMap mMap, int drawable, String title, LatLng latLng) {
-        int height = 80;
-        int width = 80;
-        BitmapDrawable bitmapDraw = (BitmapDrawable) context.getResources().getDrawable(drawable);
-        Bitmap b = bitmapDraw.getBitmap();
-        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+    public void addMarker(GoogleMap mMap, String title, LatLng latLng) {
         MarkerOptions mMarkerOptions = new MarkerOptions();
-        mMarkerOptions.title(title).position(latLng)
-                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker));
+        mMarkerOptions.title(title).position(latLng);
         mMap.addMarker(mMarkerOptions);
     }
 

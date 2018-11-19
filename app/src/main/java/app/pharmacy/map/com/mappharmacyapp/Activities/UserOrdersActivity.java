@@ -107,6 +107,7 @@ public class UserOrdersActivity extends AppCompatActivity {
                             ordersArrayList.clear();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 Order order = snapshot.getValue(Order.class);
+                                Objects.requireNonNull(order).setIndex(String.valueOf(ordersArrayList.size() + 1));
                                 ordersArrayList.add(order);
                                 userOrdersAdapter.notifyDataSetChanged();
                             }

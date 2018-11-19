@@ -40,4 +40,5 @@
     <string name="my_orders">My orders</string>
     <string name="list">List</string>
     <string name="other">Other</string>
+    <string name="order_is_sent">Thanks ! Check your order state in my orders page</string>
 </resources>

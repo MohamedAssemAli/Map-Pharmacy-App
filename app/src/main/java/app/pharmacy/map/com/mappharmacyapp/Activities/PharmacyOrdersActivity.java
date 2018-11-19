@@ -66,7 +66,7 @@ public class PharmacyOrdersActivity extends AppCompatActivity {
 
         // toolbar
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name));
+
     }
 
     @Override
@@ -105,6 +105,7 @@ public class PharmacyOrdersActivity extends AppCompatActivity {
                             ordersArrayList.clear();
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 Order order = snapshot.getValue(Order.class);
+                                Objects.requireNonNull(order).setIndex(String.valueOf(ordersArrayList.size() + 1));
                                 ordersArrayList.add(order);
                                 pharmacyOrdersAdapter.notifyDataSetChanged();
                             }

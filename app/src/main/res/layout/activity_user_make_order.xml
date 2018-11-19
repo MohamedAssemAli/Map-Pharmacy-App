@@ -22,6 +22,15 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/user_make_order_activity_pharmacy_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_padding_size_small"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold" />
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_padding_size_small"

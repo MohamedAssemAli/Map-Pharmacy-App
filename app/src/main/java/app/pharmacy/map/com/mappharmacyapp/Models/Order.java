@@ -1,5 +1,7 @@
 package app.pharmacy.map.com.mappharmacyapp.Models;
 
+import com.google.firebase.database.Exclude;
+import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.PropertyName;
 
 import java.io.Serializable;
@@ -17,6 +19,8 @@ public class Order implements Serializable {
     private String userUid;
     @PropertyName("user_name")
     private String username;
+    @Exclude
+    private String index;
 
     public Order() {
     }
@@ -89,5 +93,14 @@ public class Order implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Exclude
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 }

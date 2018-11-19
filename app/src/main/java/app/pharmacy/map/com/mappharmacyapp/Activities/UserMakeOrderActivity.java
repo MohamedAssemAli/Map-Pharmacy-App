@@ -1,5 +1,6 @@
 package app.pharmacy.map.com.mappharmacyapp.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -52,6 +54,8 @@ public class UserMakeOrderActivity extends AppCompatActivity {
     // Views
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.user_make_order_activity_pharmacy_name)
+    TextView pharmacyNameTxt;
     @BindView(R.id.user_make_order_activity_order_txt)
     EditText orderTxt;
     @BindView(R.id.user_make_order_activity_order_btn)
@@ -69,6 +73,7 @@ public class UserMakeOrderActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +84,7 @@ public class UserMakeOrderActivity extends AppCompatActivity {
             pharmacyObj = (Pharmacy) intent.getSerializableExtra(AppConfig.INTENT_KEY);
             if (pharmacyObj != null) {
                 init();
-
+                pharmacyNameTxt.setText(getString(R.string.pharmacy) + " " + pharmacyObj.getUsername());
                 // toolbar
                 setSupportActionBar(toolbar);
                 Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name));
@@ -132,9 +137,10 @@ public class UserMakeOrderActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 toggleLayout(true);
+                                finish();
+                                Toast.makeText(UserMakeOrderActivity.this, getString(R.string.order_is_sent), Toast.LENGTH_LONG).show();
                             }
                         });
-                        finish();
 
                     }
                 }).addOnFailureListener(new OnFailureListener() {

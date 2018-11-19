@@ -42,6 +42,7 @@ public class PharmacyOrdersAdapter extends RecyclerView.Adapter<PharmacyOrdersAd
     public void onBindViewHolder(@NonNull OrderHolder orderHolder, int i) {
         final Order order = ordersArrayList.get(i);
         orderHolder.itemOrderUsername.setText(order.getUsername());
+        orderHolder.itemOrderNumber.setText(context.getString(R.string.order_number) + " " + order.getIndex());
         if (order.getState() == 0) {
             orderHolder.itemOrderState.setText(context.getString(R.string.pending));
             orderHolder.itemOrderState.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
@@ -68,6 +69,8 @@ public class PharmacyOrdersAdapter extends RecyclerView.Adapter<PharmacyOrdersAd
 
         @BindView(R.id.item_order_username)
         TextView itemOrderUsername;
+        @BindView(R.id.item_order_number)
+        TextView itemOrderNumber;
         @BindView(R.id.item_order_state)
         TextView itemOrderState;
         @BindView(R.id.item_order_layout)

@@ -1,5 +1,6 @@
 package app.pharmacy.map.com.mappharmacyapp.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,10 +39,12 @@ public class UserOrdersAdapter extends RecyclerView.Adapter<UserOrdersAdapter.Or
         return new OrderHolder(item);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull OrderHolder orderHolder, int i) {
         final Order order = ordersArrayList.get(i);
         orderHolder.itemOrderUsername.setText(order.getPharmacyName());
+        orderHolder.itemOrderNumber.setText(context.getString(R.string.order_number) + " " + order.getIndex());
         if (order.getState() == 0) {
             orderHolder.itemOrderState.setText(context.getString(R.string.pending));
             orderHolder.itemOrderState.setBackgroundColor(ContextCompat.getColor(context, R.color.red));
@@ -62,6 +65,8 @@ public class UserOrdersAdapter extends RecyclerView.Adapter<UserOrdersAdapter.Or
 
         @BindView(R.id.item_order_username)
         TextView itemOrderUsername;
+        @BindView(R.id.item_order_number)
+        TextView itemOrderNumber;
         @BindView(R.id.item_order_state)
         TextView itemOrderState;
         @BindView(R.id.item_order_order)

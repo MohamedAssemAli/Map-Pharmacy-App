@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 } else {
-                    Intent intent = new Intent(MainActivity.this, UserPharmacyList.class);
+                    Intent intent = new Intent(MainActivity.this, UserMapActivity.class);
                     startActivity(intent);
                     finish();
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

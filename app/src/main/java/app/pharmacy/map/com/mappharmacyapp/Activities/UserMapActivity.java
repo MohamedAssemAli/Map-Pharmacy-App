@@ -41,6 +41,7 @@ import java.util.Objects;
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
 import app.pharmacy.map.com.mappharmacyapp.Models.Pharmacy;
 import app.pharmacy.map.com.mappharmacyapp.R;
+import app.pharmacy.map.com.mappharmacyapp.Utils.MapUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -51,7 +52,7 @@ public class UserMapActivity extends AppCompatActivity implements OnMapReadyCall
     private boolean mLocationPermissionGranted = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private GoogleMap mMap;
-    //    private Marker marker;
+    private MapUtil mapUtil;
     // Firebase
     private DatabaseReference mRef;
     private FirebaseAuth mAuth;
@@ -67,8 +68,8 @@ public class UserMapActivity extends AppCompatActivity implements OnMapReadyCall
         // toolbar
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.app_name));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     private void init() {
@@ -88,6 +89,7 @@ public class UserMapActivity extends AppCompatActivity implements OnMapReadyCall
             }
             mMap.setMyLocationEnabled(true); //to get blue marker with GPS icon
             mMap.getUiSettings().setMyLocationButtonEnabled(true); //to hide GPS icon
+            mapUtil = new MapUtil();
             getPharmacyOnMap();
 
         }
@@ -101,10 +103,7 @@ public class UserMapActivity extends AppCompatActivity implements OnMapReadyCall
                     final Pharmacy pharmacy = snapshot.getValue(Pharmacy.class);
                     Double lat = Double.parseDouble(Objects.requireNonNull(pharmacy).getLat());
                     Double lon = Double.parseDouble(pharmacy.getLon());
-                    Marker marker = mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(lat, lon))
-                            .title(Objects.requireNonNull(pharmacy).getUsername()));
-                    marker.showInfoWindow();
+                    mapUtil.addMarker(mMap, Objects.requireNonNull(pharmacy.getUsername()), new LatLng(lat, lon));
                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(Marker marker) {

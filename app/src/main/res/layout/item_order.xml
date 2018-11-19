@@ -44,6 +44,14 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/item_order_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/text_size_small" />
+
+            <TextView
                 android:id="@+id/item_order_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

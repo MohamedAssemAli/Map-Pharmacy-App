@@ -109,7 +109,7 @@ public class PharmacyOrderDetails extends AppCompatActivity {
 
     private void updateUi(Order order) {
         orderUsernameTxt.setText(order.getUsername());
-        orderNumberTxt.setText(order.getUid());
+        orderNumberTxt.setText(order.getIndex());
         orderTxt.setText(order.getOrder());
         if (order.getState() == 0) {
             pendingStateRadioButton.setChecked(true);

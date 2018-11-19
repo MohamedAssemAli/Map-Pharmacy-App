@@ -123,7 +123,7 @@ public class PharmacyMapActivity extends FragmentActivity implements OnMapReadyC
                         String uid = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
                         user.setUid(uid);
                         mRef.child(AppConfig.USERS).child(uid).setValue(user);
-                        Intent intent = new Intent(PharmacyMapActivity.this, UserPharmacyList.class);
+                        Intent intent = new Intent(PharmacyMapActivity.this, UserMapActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_CLEAR_TASK |
                                 Intent.FLAG_ACTIVITY_NEW_TASK);
