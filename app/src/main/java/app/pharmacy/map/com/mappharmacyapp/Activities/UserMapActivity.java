@@ -36,6 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import app.pharmacy.map.com.mappharmacyapp.App.AppConfig;
@@ -91,26 +92,29 @@ public class UserMapActivity extends AppCompatActivity implements OnMapReadyCall
             mMap.getUiSettings().setMyLocationButtonEnabled(true); //to hide GPS icon
             mapUtil = new MapUtil();
             getPharmacyOnMap();
-
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+                    goToMakeOrder(getPharmacy(Objects.requireNonNull(marker.getTag()).toString()));
+                    return false;
+                }
+            });
         }
     }
+
+    ArrayList<Pharmacy> pharmacyArrayList = new ArrayList<>();
 
     private void getPharmacyOnMap() {
         mRef.child(AppConfig.PHARMACY).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                pharmacyArrayList.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     final Pharmacy pharmacy = snapshot.getValue(Pharmacy.class);
                     Double lat = Double.parseDouble(Objects.requireNonNull(pharmacy).getLat());
                     Double lon = Double.parseDouble(pharmacy.getLon());
-                    mapUtil.addMarker(mMap, Objects.requireNonNull(pharmacy.getUsername()), new LatLng(lat, lon));
-                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                        @Override
-                        public boolean onMarkerClick(Marker marker) {
-                            goToMakeOrder(pharmacy);
-                            return false;
-                        }
-                    });
+                    pharmacyArrayList.add(pharmacy);
+                    mapUtil.addMarker(mMap, Objects.requireNonNull(pharmacy.getUsername()), new LatLng(lat, lon), pharmacy.getUid());
                 }
             }
 
@@ -119,6 +123,14 @@ public class UserMapActivity extends AppCompatActivity implements OnMapReadyCall
 
             }
         });
+    }
+
+    private Pharmacy getPharmacy(String tag) {
+        for (Pharmacy pharmacy : pharmacyArrayList) {
+            if (pharmacy.getUid().equals(tag))
+                return pharmacy;
+        }
+        return null;
     }
 
     private void goToMakeOrder(Pharmacy pharmacy) {

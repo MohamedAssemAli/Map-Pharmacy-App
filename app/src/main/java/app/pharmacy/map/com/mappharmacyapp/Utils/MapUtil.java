@@ -39,10 +39,10 @@ public class MapUtil {
         mMap.addMarker(mMarkerOptions);
     }
 
-    public void addMarker(GoogleMap mMap, String title, LatLng latLng) {
+    public void addMarker(GoogleMap mMap, String title, LatLng latLng, String markerTag) {
         MarkerOptions mMarkerOptions = new MarkerOptions();
         mMarkerOptions.title(title).position(latLng);
-        mMap.addMarker(mMarkerOptions);
+        mMap.addMarker(mMarkerOptions).setTag(markerTag);
     }
 
     public void animateCamera(GoogleMap mMap, Location location, float zoom) {
